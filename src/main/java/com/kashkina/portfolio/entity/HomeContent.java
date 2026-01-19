@@ -6,35 +6,29 @@ import lombok.*;
 import java.time.LocalDateTime;
 
 @Entity
-@Table(name = "profile")
+@Table(name = "home_content")
 @Getter
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class Profile {
+public class HomeContent {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "full_name", length = 150, nullable = false)
+    @Column(name = "full_name", length = 255, nullable = false)
     private String fullName;
 
-    @Column(length = 150, nullable = false)
-    private String role;
+    @Column(name = "role_title", length = 255, nullable = false)
+    private String roleTitle;
 
-    @Column(name = "short_bio", length = 500)
+    @Column(name = "role_type", length = 255)
+    private String roleType;
+
+    @Column(name = "short_bio", columnDefinition = "TEXT")
     private String shortBio;
-
-    @Column(name = "about_text", columnDefinition = "TEXT")
-    private String aboutText;
-
-    @Column(length = 100)
-    private String location;
-
-    @Column(length = 150)
-    private String email;
 
     @Column(name = "github_url", length = 255)
     private String githubUrl;

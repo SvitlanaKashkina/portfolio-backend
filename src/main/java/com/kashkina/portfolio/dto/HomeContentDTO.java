@@ -7,14 +7,17 @@ import lombok.*;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class ProfileDTO {
+public class HomeContentDTO {
 
     private String fullName;
-    private String role;
+
+    private String roleTitle;
+
+    private String roleType;
+
     private String shortBio;
-    private String aboutText;
-    private String location;
-    private String email;
+
     private String githubUrl;
+
     private String linkedinUrl;
 }
