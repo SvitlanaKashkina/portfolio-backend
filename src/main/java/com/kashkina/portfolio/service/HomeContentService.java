@@ -1,8 +1,8 @@
 package com.kashkina.portfolio.service;
 
-import com.kashkina.portfolio.dto.HomeContentDTO;
-import com.kashkina.portfolio.entity.HomeContent;
-import com.kashkina.portfolio.repository.HomeContentRepository;
+import com.kashkina.portfolio.dto.home.HomeContentDTO;
+import com.kashkina.portfolio.entity.home.HomeContent;
+import com.kashkina.portfolio.repository.home.HomeContentRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 

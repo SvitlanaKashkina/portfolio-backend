@@ -1,7 +1,7 @@
 package com.kashkina.portfolio.controller;
 
-import com.kashkina.portfolio.entity.HomeContent;
-import com.kashkina.portfolio.repository.HomeContentRepository;
+import com.kashkina.portfolio.entity.home.HomeContent;
+import com.kashkina.portfolio.repository.home.HomeContentRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 

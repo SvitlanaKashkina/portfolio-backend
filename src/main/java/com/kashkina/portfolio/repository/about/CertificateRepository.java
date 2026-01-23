@@ -1,6 +1,6 @@
-package com.kashkina.portfolio.repository;
+package com.kashkina.portfolio.repository.about;
 
-import com.kashkina.portfolio.entity.Certificate;
+import com.kashkina.portfolio.entity.about.Certificate;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 

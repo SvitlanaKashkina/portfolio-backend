@@ -1,10 +1,10 @@
 package com.kashkina.portfolio.service;
 
-import com.kashkina.portfolio.dto.AboutMeDTO;
-import com.kashkina.portfolio.dto.AboutMeResponseDTO;
-import com.kashkina.portfolio.dto.CertificateDTO;
-import com.kashkina.portfolio.repository.AboutMeRepository;
-import com.kashkina.portfolio.repository.CertificateRepository;
+import com.kashkina.portfolio.dto.about.AboutMeDTO;
+import com.kashkina.portfolio.dto.about.AboutMeResponseDTO;
+import com.kashkina.portfolio.dto.about.CertificateDTO;
+import com.kashkina.portfolio.repository.about.AboutMeRepository;
+import com.kashkina.portfolio.repository.about.CertificateRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 

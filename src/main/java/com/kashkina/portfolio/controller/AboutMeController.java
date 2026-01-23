@@ -1,11 +1,9 @@
 package com.kashkina.portfolio.controller;
 
-import com.kashkina.portfolio.dto.AboutMeResponseDTO;
+import com.kashkina.portfolio.dto.about.AboutMeResponseDTO;
 import com.kashkina.portfolio.service.AboutMeService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
 
 @RestController
 @RequestMapping("/api/about")

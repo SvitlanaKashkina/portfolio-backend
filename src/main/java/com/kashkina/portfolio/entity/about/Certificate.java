@@ -1,4 +1,4 @@
-package com.kashkina.portfolio.entity;
+package com.kashkina.portfolio.entity.about;
 
 import jakarta.persistence.*;
 import lombok.*;

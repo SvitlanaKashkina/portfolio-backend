@@ -1,4 +1,4 @@
-package com.kashkina.portfolio.dto;
+package com.kashkina.portfolio.dto.home;
 
 import lombok.*;
 
