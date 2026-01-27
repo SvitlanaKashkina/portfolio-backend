@@ -23,8 +23,6 @@ This is the **backend for my personal portfolio website**, built with **Java Spr
 - PostgreSQL
 - Maven
 
-## Getting Started
-
 ### Prerequisites
 
 - Java 17
