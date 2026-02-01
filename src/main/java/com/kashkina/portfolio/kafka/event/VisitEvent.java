@@ -7,10 +7,8 @@ import java.time.LocalDateTime;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-@Getter
-@Setter
 public class VisitEvent {
     private String sessionId;
-    private String page;
+    private String page;   // "/api/about", "/api/home" ....
     private LocalDateTime timestamp;
 }

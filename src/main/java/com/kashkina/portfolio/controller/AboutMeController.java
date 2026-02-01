@@ -28,13 +28,16 @@ public class AboutMeController {
         log.info("GET /api/about called");
 
         // Sending an event to Kafka
-        visitEventProducer.sendVisitEvent(
-                new VisitEvent(
-                        session.getId(),        // unique user session
-                        "/api/about",
-                        LocalDateTime.now()
-                )
-        );
+        VisitEvent event = new VisitEvent(
+                session.getId(),
+                "/api/about",
+                LocalDateTime.now());
+        try {
+            visitEventProducer.sendVisitEvent(event);
+            log.info("VisitEvent sent for AboutMe page: {}", event.getSessionId());
+        } catch (Exception e) {
+            log.error("Failed to send VisitEvent to Kafka: {}", e.getMessage(), e);
+        }
 
         return service.getAboutMeContent();
     }

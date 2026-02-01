@@ -1,8 +1,9 @@
 package com.kashkina.portfolio.kafka.config;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
+import com.kashkina.portfolio.kafka.event.VisitEvent;
+import com.kashkina.portfolio.kafka.serializer.JacksonDeserializer;
+import com.kashkina.portfolio.kafka.serializer.JacksonSerializer;
 import org.apache.kafka.clients.consumer.ConsumerConfig;
-import org.apache.kafka.clients.consumer.ConsumerRecord;
 import org.apache.kafka.clients.producer.ProducerConfig;
 import org.apache.kafka.common.serialization.StringDeserializer;
 import org.apache.kafka.common.serialization.StringSerializer;
@@ -19,50 +20,41 @@ import java.util.Map;
 @Configuration
 public class KafkaConfig {
 
-    private final String bootstrapServers = "localhost:9092";
+    private final String bootstrapServers = "localhost:29092";
 
-    private final ObjectMapper objectMapper = new ObjectMapper();
-
-    // --- Producer ---
+    // ---------------- Producer ----------------
     @Bean
-    public ProducerFactory<String, String> producerFactory() {
+    public ProducerFactory<String, VisitEvent> visitEventProducerFactory() {
         Map<String, Object> config = new HashMap<>();
         config.put(ProducerConfig.BOOTSTRAP_SERVERS_CONFIG, bootstrapServers);
         config.put(ProducerConfig.KEY_SERIALIZER_CLASS_CONFIG, StringSerializer.class);
-        config.put(ProducerConfig.VALUE_SERIALIZER_CLASS_CONFIG, StringSerializer.class); // строка
+        config.put(ProducerConfig.VALUE_SERIALIZER_CLASS_CONFIG, JacksonSerializer.class); // Jackson сериализация
         return new DefaultKafkaProducerFactory<>(config);
     }
 
     @Bean
-    public KafkaTemplate<String, String> kafkaTemplate() {
-        return new KafkaTemplate<>(producerFactory());
+    public KafkaTemplate<String, VisitEvent> visitEventKafkaTemplate() {
+        return new KafkaTemplate<>(visitEventProducerFactory());
     }
 
-    // --- Consumer ---
+    // ---------------- Consumer ----------------
     @Bean
-    public ConcurrentKafkaListenerContainerFactory<String, String> kafkaListenerContainerFactory() {
-        ConcurrentKafkaListenerContainerFactory<String, String> factory =
-                new ConcurrentKafkaListenerContainerFactory<>();
-        factory.setConsumerFactory(consumerFactory());
-        return factory;
-    }
-
-    @Bean
-    public ConsumerFactory<String, String> consumerFactory() {
+    public ConsumerFactory<String, VisitEvent> consumerFactory() {
         Map<String, Object> props = new HashMap<>();
         props.put(ConsumerConfig.BOOTSTRAP_SERVERS_CONFIG, bootstrapServers);
         props.put(ConsumerConfig.GROUP_ID_CONFIG, "visit-group");
         props.put(ConsumerConfig.KEY_DESERIALIZER_CLASS_CONFIG, StringDeserializer.class);
-        props.put(ConsumerConfig.VALUE_DESERIALIZER_CLASS_CONFIG, StringDeserializer.class);
-        return new DefaultKafkaConsumerFactory<>(props);
+        props.put(ConsumerConfig.VALUE_DESERIALIZER_CLASS_CONFIG, JacksonDeserializer.class);
+        return new DefaultKafkaConsumerFactory<>(props,
+                new StringDeserializer(),
+                new JacksonDeserializer<>(VisitEvent.class));
     }
 
-    // Helper methods for JSON serialization/deserialization
-    public String toJson(Object obj) throws Exception {
-        return objectMapper.writeValueAsString(obj);
-    }
-
-    public <T> T fromJson(String json, Class<T> clazz) throws Exception {
-        return objectMapper.readValue(json, clazz);
+    @Bean
+    public ConcurrentKafkaListenerContainerFactory<String, VisitEvent> kafkaListenerContainerFactory() {
+        ConcurrentKafkaListenerContainerFactory<String, VisitEvent> factory =
+                new ConcurrentKafkaListenerContainerFactory<>();
+        factory.setConsumerFactory(consumerFactory());
+        return factory;
     }
 }

@@ -1,6 +1,6 @@
 package com.kashkina.portfolio.unit.controllers;
 
-import com.kashkina.portfolio.controller.ContactMessageController;
+import com.kashkina.portfolio.controller.ContactController;
 import com.kashkina.portfolio.dto.contact.ContactMessageDTO;
 import com.kashkina.portfolio.entity.contact.ContactMessage;
 import com.kashkina.portfolio.kafka.producer.VisitEventProducer;
@@ -18,7 +18,7 @@ import static org.mockito.Mockito.*;
 
 class ContactMessageControllerTest {
 
-    private ContactMessageController controller;
+    private ContactController controller;
     private ContactMessageService service;
     private ContactMessageRepository repository;
     private EmailService emailService;
@@ -28,7 +28,7 @@ class ContactMessageControllerTest {
     @BeforeEach
     void setUp() {
         service = mock(ContactMessageService.class); // creating a mock service
-        controller = new ContactMessageController(service, repository, emailService, visitEventProducer); // Create a controller with a mock service
+        controller = new ContactController(service, repository, emailService, visitEventProducer); // Create a controller with a mock service
     }
 
     @Test

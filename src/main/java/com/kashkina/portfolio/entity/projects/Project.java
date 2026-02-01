@@ -75,5 +75,5 @@ public class Project {
 
         @OneToMany(mappedBy = "project", cascade = CascadeType.ALL, orphanRemoval = true)
         @OrderBy("displayOrder ASC")
-        private Set<ProjectScreenshot> screenshots = new HashSet<>();
+        private Set<ProjectFoto> screenshots = new HashSet<>();
 }

@@ -2,7 +2,7 @@ package com.kashkina.portfolio.service;
 
 import com.kashkina.portfolio.dto.projects.ProjectDto;
 import com.kashkina.portfolio.dto.projects.ProjectFeatureDto;
-import com.kashkina.portfolio.dto.projects.ProjectScreenshotDto;
+import com.kashkina.portfolio.dto.projects.ProjectFotoDto;
 import com.kashkina.portfolio.dto.projects.TechnologyDto;
 import com.kashkina.portfolio.entity.projects.Project;
 import com.kashkina.portfolio.repository.projects.ProjectRepository;
@@ -93,15 +93,15 @@ public class ProjectService {
         // Screenshots (Set -> Set)
         dto.setScreenshots(
                 Optional.ofNullable(project.getScreenshots())
-                        .orElse(Set.of())    // Set из сущности
+                        .orElse(Set.of())
                         .stream()
-                        .map(s -> new ProjectScreenshotDto(
+                        .map(s -> new ProjectFotoDto(
                                 s.getId(),
                                 s.getImageUrl(),
                                 s.getAltText(),
                                 s.getDisplayOrder()
                         ))
-                        .sorted(Comparator.comparing(ProjectScreenshotDto::displayOrder))
+                        .sorted(Comparator.comparing(ProjectFotoDto::displayOrder))
                         .toList()
         );
 

@@ -24,14 +24,14 @@ import java.time.LocalDateTime;
 @RestController
 @RequestMapping("/api/contact")
 @RequiredArgsConstructor
-public class ContactMessageController {
+public class ContactController {
 
-    private static final Logger log = LoggerFactory.getLogger(ContactMessageController.class);
+    private static final Logger log = LoggerFactory.getLogger(ContactController.class);
 
     private final ContactMessageService service;
     private final ContactMessageRepository contactRepository;
     private final EmailService emailService;
-    private final VisitEventProducer visitEventProducer; // adding Kafka Producer
+    private final VisitEventProducer visitEventProducer; // Kafka Producer
 
     @PostMapping
     public ResponseEntity<?> createContactMessage(@Valid @RequestBody ContactMessageDTO dto, HttpSession session) {
@@ -42,7 +42,7 @@ public class ContactMessageController {
             log.info("Contact message saved successfully with id: {}", savedMessage.getId());
             log.debug("Saved contact message details: {}", savedMessage);
 
-            // send email
+            // Send email
             try {
                 emailService.sendContactMessageEmail(savedMessage);
                 log.info("Email sent successfully for contact message from {}", savedMessage.getEmail());
@@ -52,14 +52,17 @@ public class ContactMessageController {
                         .body("Message saved but failed to send email. Please try again later.");
             }
 
-            // Sending an event to Kafka after successful saving
-            visitEventProducer.sendVisitEvent(
-                    new VisitEvent(
-                            session.getId(),             // user session
-                            "/api/contact",
-                            LocalDateTime.now()
-                    )
-            );
+            // Sending an event to Kafka
+            VisitEvent event = new VisitEvent(
+                    session.getId(),
+                    "/api/contact",
+                    LocalDateTime.now());
+            try {
+                visitEventProducer.sendVisitEvent(event);
+                log.info("VisitEvent sent for Contact page: {}", event.getSessionId());
+            } catch (Exception e) {
+                log.error("Failed to send VisitEvent to Kafka: {}", e.getMessage(), e);
+            }
 
             return ResponseEntity.status(HttpStatus.CREATED).body(savedMessage);
 

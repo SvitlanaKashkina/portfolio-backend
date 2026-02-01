@@ -15,9 +15,9 @@ import org.slf4j.LoggerFactory;
 @RestController
 @RequestMapping("/api")
 @RequiredArgsConstructor
-public class HomeContentController {
+public class HomeController {
 
-    private static final Logger log = LoggerFactory.getLogger(HomeContentController.class);
+    private static final Logger log = LoggerFactory.getLogger(HomeController.class);
 
     private final HomeContentRepository repository;
     private final VisitEventProducer visitEventProducer; // Kafka Producer
@@ -27,13 +27,16 @@ public class HomeContentController {
         log.info("GET /api/home called");
 
         // Sending an event to Kafka
-        visitEventProducer.sendVisitEvent(
-                new VisitEvent(
-                        session.getId(),           // unique session
-                        "/api/home",
-                        LocalDateTime.now()
-                )
-        );
+        VisitEvent event = new VisitEvent(
+                session.getId(),
+                "/api/home",
+                LocalDateTime.now());
+        try {
+            visitEventProducer.sendVisitEvent(event);
+            log.info("VisitEvent sent for Home page: {}", event.getSessionId());
+        } catch (Exception e) {
+            log.error("Failed to send VisitEvent to Kafka: {}", e.getMessage(), e);
+        }
 
         HomeContent content = repository.findById(1)
                 .orElseThrow(() -> {

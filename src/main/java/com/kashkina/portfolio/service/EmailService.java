@@ -1,12 +1,16 @@
 package com.kashkina.portfolio.service;
 
 import com.kashkina.portfolio.entity.contact.ContactMessage;
-import org.springframework.beans.factory.annotation.Value;
+import com.kashkina.portfolio.kafka.event.VisitEvent;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.mail.MailException;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.stereotype.Service;
 
+import java.util.Map;
+
+@Slf4j
 @Service
 public class EmailService {
 
@@ -17,9 +21,7 @@ public class EmailService {
     }
 
     public void sendContactMessageEmail(ContactMessage contact) throws MailException {
-
-        System.out.println("MAIL USER = " + System.getenv("SPRING_MAIL_USERNAME"));
-        System.out.println("MAIL PASS = " + System.getenv("SPRING_MAIL_PASSWORD"));
+        log.info("Call sendContactMessageEmail");
 
         StringBuilder text = new StringBuilder();
             text.append("Name: ").append(contact.getName()).append("\n")
@@ -31,11 +33,34 @@ public class EmailService {
                 .append("Sent: ").append(contact.getCreatedAt());
 
         SimpleMailMessage message = new SimpleMailMessage();
-        message.setTo("svitlana.kashkina@gmail.com");
+        String toEmail = System.getenv("SPRING_MAIL_USERNAME");
+        message.setTo(toEmail);
         message.setSubject("New post from the Portfolio website: " + (contact.getSubject() != null ? contact.getSubject() : "No theme"));
         message.setText(text.toString());
 
         // send and rethrow the exception further
         mailSender.send(message);
+        log.info("Email sent successfully");
+    }
+
+    // Kafka E-mail
+    public void sendVisitNotification(VisitEvent event, int totalSessions, Map<String, Integer> pageVisits) throws MailException {
+        StringBuilder text = new StringBuilder();
+        text.append("A new user visited your portfolio site!\n\n")
+                .append("Session ID: ").append(event.getSessionId()).append("\n")
+                .append("Timestamp: ").append(event.getTimestamp()).append("\n\n")
+                .append("Total unique site visits so far: ").append(totalSessions).append("\n\n")
+                .append("Page visit counts:\n");
+
+        pageVisits.forEach((page, count) -> text.append(page).append(": ").append(count).append("\n"));
+
+        SimpleMailMessage message = new SimpleMailMessage();
+        String toEmail = System.getenv("SPRING_MAIL_USERNAME");
+        message.setTo(toEmail);
+        message.setSubject("Portfolio site visit notification: new user");
+        message.setText(text.toString());
+
+        mailSender.send(message);
+        log.info("Visit notification sent for new session: {}", event.getSessionId());
     }
 }

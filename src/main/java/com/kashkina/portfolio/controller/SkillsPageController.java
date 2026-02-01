@@ -30,13 +30,16 @@ public class SkillsPageController {
         log.info("GET /api/skills called");
 
         // Send an event to Kafka on every page visit
-        visitEventProducer.sendVisitEvent(
-                new VisitEvent(
-                        session.getId(),           // unique session
-                        "/api/skills",
-                        LocalDateTime.now()
-                )
-        );
+        VisitEvent event = new VisitEvent(
+                session.getId(),
+                "/api/skills",
+                LocalDateTime.now());
+        try {
+            visitEventProducer.sendVisitEvent(event);
+            log.info("VisitEvent sent for Skills page: {}", event.getSessionId());
+        } catch (Exception e) {
+            log.error("Failed to send VisitEvent to Kafka: {}", e.getMessage(), e);
+        }
 
         SkillsPageDTO skillsPage = skillsPageService.getAllSkills();
 

@@ -1,5 +1,6 @@
 package com.kashkina.portfolio.dto.about;
 
+import com.kashkina.portfolio.dto.projects.ProjectFotoDto;
 import lombok.*;
 import java.util.List;
 
@@ -11,4 +12,5 @@ import java.util.List;
 public class AboutMeResponseDTO {
     private List<AboutMeDTO> sections;
     private List<CertificateDTO> certificates;
+    private List<ProjectFotoDto> photos;
 }

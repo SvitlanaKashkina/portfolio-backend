@@ -1,5 +1,6 @@
 package com.kashkina.portfolio.dto.projects;
 
+import com.kashkina.portfolio.entity.projects.ProjectFoto;
 import lombok.*;
 
 import java.time.LocalDate;
@@ -25,5 +26,5 @@ public class ProjectDto {
 
     private List<TechnologyDto> technologies;
     private List<ProjectFeatureDto> features;
-    private List<ProjectScreenshotDto> screenshots;
+    private List<ProjectFotoDto> screenshots;
 }

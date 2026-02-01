@@ -1,6 +1,6 @@
 package com.kashkina.portfolio.unit.controllers;
 
-import com.kashkina.portfolio.controller.HomeContentController;
+import com.kashkina.portfolio.controller.HomeController;
 import com.kashkina.portfolio.entity.home.HomeContent;
 import com.kashkina.portfolio.kafka.producer.VisitEventProducer;
 import com.kashkina.portfolio.repository.home.HomeContentRepository;
@@ -15,7 +15,7 @@ import static org.mockito.Mockito.*;
 
 class HomeContentControllerTest {
 
-    private HomeContentController controller;
+    private HomeController controller;
     private HomeContentRepository repository;
     private VisitEventProducer visitEventProducer;
     private HttpSession session;
@@ -23,7 +23,7 @@ class HomeContentControllerTest {
     @BeforeEach
     void setUp() {
         repository = mock(HomeContentRepository.class); // mock repository
-        controller = new HomeContentController(repository, visitEventProducer); // controller with mock repository
+        controller = new HomeController(repository, visitEventProducer); // controller with mock repository
     }
 
     @Test

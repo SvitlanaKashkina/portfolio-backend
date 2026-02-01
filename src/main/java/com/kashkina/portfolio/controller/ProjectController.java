@@ -30,13 +30,16 @@ public class ProjectController {
         log.info("GET /api/projects called");
 
         // Send an event to Kafka on every page visit
-        visitEventProducer.sendVisitEvent(
-                new VisitEvent(
-                        session.getId(),           // unique session
-                        "/api/projects",
-                        LocalDateTime.now()
-                )
-        );
+        VisitEvent event = new VisitEvent(
+                session.getId(),
+                "/api/projects",
+                LocalDateTime.now());
+        try {
+            visitEventProducer.sendVisitEvent(event);
+            log.info("VisitEvent sent for Project page: {}", event.getSessionId());
+        } catch (Exception e) {
+            log.error("Failed to send VisitEvent to Kafka: {}", e.getMessage(), e);
+        }
 
         List<ProjectDto> projects = projectService.getAllProjects();
 
