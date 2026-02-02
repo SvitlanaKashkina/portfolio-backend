@@ -26,7 +26,7 @@ public class AboutMeService {
     private final AboutMeRepository repository;
     private final ProjectFotoRepository projectFotoRepository;
     private final CertificateRepository certificateRepository;
-    private static final List<Integer> ABOUT_PHOTO_IDS = List.of(31, 32, 33);
+    private static final List<Integer> ABOUT_PHOTO_IDS = List.of(31, 32, 33, 35);
 
     public AboutMeResponseDTO getAboutMeContent() {
         log.info("Fetching About Me sections from the database");
@@ -62,7 +62,7 @@ public class AboutMeService {
         log.info("Fetching About Me photos from database");
 
         // IDs фотографий для About Me
-        List<Integer> aboutPhotoIds = List.of(31, 32, 33);
+        List<Integer> aboutPhotoIds = List.of(31, 32, 33, 35);
 
         List<ProjectFotoDto> photos = projectFotoRepository
                 .findAllById(ABOUT_PHOTO_IDS)

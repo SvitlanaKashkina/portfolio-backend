@@ -9,5 +9,5 @@ import java.util.List;
 @Repository
 public interface ProjectFotoRepository extends JpaRepository<ProjectFoto, Integer> {
 
-    List<ProjectFoto> findAllById(Iterable<Integer> ids);
+    List<ProjectFoto> findAllById(Iterable<Integer> id);
 }

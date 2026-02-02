@@ -1,9 +1,10 @@
 package com.kashkina.portfolio.controller;
 
+import com.kashkina.portfolio.dto.home.HomeContentDTO;
 import com.kashkina.portfolio.entity.home.HomeContent;
 import com.kashkina.portfolio.kafka.event.VisitEvent;
 import com.kashkina.portfolio.kafka.producer.VisitEventProducer;
-import com.kashkina.portfolio.repository.home.HomeContentRepository;
+import com.kashkina.portfolio.service.HomeContentService;
 import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
@@ -19,11 +20,11 @@ public class HomeController {
 
     private static final Logger log = LoggerFactory.getLogger(HomeController.class);
 
-    private final HomeContentRepository repository;
+    private final HomeContentService homeContentService;
     private final VisitEventProducer visitEventProducer; // Kafka Producer
 
     @GetMapping("/home")
-    public HomeContent getHomeContent(HttpSession session) {
+    public HomeContentDTO getHomeContent(HttpSession session) {
         log.info("GET /api/home called");
 
         // Sending an event to Kafka
@@ -38,15 +39,11 @@ public class HomeController {
             log.error("Failed to send VisitEvent to Kafka: {}", e.getMessage(), e);
         }
 
-        HomeContent content = repository.findById(1)
-                .orElseThrow(() -> {
-                    log.error("Home content not found in database");
-                    return new RuntimeException("Home content not found");
-                });
+        HomeContentDTO contentDto = homeContentService.getHomeContentDTO();
 
-        log.info("Returning Home content successfully");
-        log.debug("Home content: {}", content);
+        log.info("Returning HomeContentDTO successfully");
+        log.debug("HomeContentDTO: {}", contentDto);
 
-        return content;
+        return contentDto;
     }
 }

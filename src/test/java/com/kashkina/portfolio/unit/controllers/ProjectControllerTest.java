@@ -3,7 +3,7 @@ package com.kashkina.portfolio.unit.controllers;
 import com.kashkina.portfolio.controller.ProjectController;
 import com.kashkina.portfolio.dto.projects.ProjectDto;
 import com.kashkina.portfolio.dto.projects.ProjectFeatureDto;
-import com.kashkina.portfolio.dto.projects.ProjectScreenshotDto;
+import com.kashkina.portfolio.dto.projects.ProjectFotoDto;
 import com.kashkina.portfolio.dto.projects.TechnologyDto;
 import com.kashkina.portfolio.kafka.producer.VisitEventProducer;
 import com.kashkina.portfolio.service.ProjectService;
@@ -27,7 +27,7 @@ class ProjectControllerTest {
     @BeforeEach
     void setUp() {
         projectService = mock(ProjectService.class);
-        controller = new ProjectController(projectService, visitEventProducer, session);
+        controller = new ProjectController(projectService, visitEventProducer);
     }
 
     @Test
@@ -39,7 +39,7 @@ class ProjectControllerTest {
         ProjectFeatureDto feature1 = new ProjectFeatureDto(1, "Login system", 1);
         ProjectFeatureDto feature2 = new ProjectFeatureDto(2, "Chat functionality", 2);
 
-        ProjectScreenshotDto screenshot1 = new ProjectScreenshotDto(1, "url1.png", "Home page", 1);
+        ProjectFotoDto screenshot1 = new ProjectFotoDto(1, "url1.png", "Home page", 1);
 
         // Preparing ProjectDto
         ProjectDto project = ProjectDto.builder()

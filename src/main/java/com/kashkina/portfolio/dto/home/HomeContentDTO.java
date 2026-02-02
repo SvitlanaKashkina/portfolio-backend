@@ -1,6 +1,9 @@
 package com.kashkina.portfolio.dto.home;
 
+import com.kashkina.portfolio.dto.projects.ProjectFotoDto;
 import lombok.*;
+
+import java.util.List;
 
 @Getter
 @Setter
@@ -20,4 +23,6 @@ public class HomeContentDTO {
     private String githubUrl;
 
     private String linkedinUrl;
+
+    private List<ProjectFotoDto> videos;
 }
